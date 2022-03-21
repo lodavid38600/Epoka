@@ -25,7 +25,7 @@ EPOKA possède un système de verification de mission à 3 niveau :
 -> 3ème niveau : Le comptable (il peut rembourser une mission valider par les deux premier niveau)
 
 
-## Contributing
+## Contribution
 
 Les Pull request sont le bienvenue. 
 
