@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">MonApplication</string>
+    <string name="menu">Menu</string>
+    <string name="ajouter_une_mission">Ajouter une mission</string>
+    <string name="depart_le">Depart le :</string>
+    <string name="envoyer">Envoyer</string>
+    <string name="retour_le">Retour le :</string>
+    <string name="a">A :</string>
+</resources>
