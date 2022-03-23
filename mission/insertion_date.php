@@ -51,22 +51,66 @@ if($_GET['date_depart'] == "" || $_GET['date_rentrer'] == "" || $_GET['ville_des
  $date_now = date('Y-m-d');
 
  if($_SESSION['id_sal'] == "" && $_GET['sess_id'] != ""){
- $stmt=$conn->prepare("INSERT INTO mission (id_salarie, id_forfait, date_depart, date_rentrer, Id_commune, date_creation) VALUES ('".$_GET['sess_id']."', '".$h['max']."', '".$newdate_depart."', '".$newdate_rentrer."', '".$ville_dest."', '".$date_now."')");
+
+  $stmt=$conn->prepare("SELECT id_agence from salarie where id_salarie = '".$_GET['sess_id']."'");
+  $stmt->execute();
+  foreach($stmt->fetchAll() as $k=>$v) {
+    $id_agence = $v['id_agence'];
+  }
+  
+  
+  $stmt=$conn->prepare("SELECT ville FROM agence where id_agence = '".$id_agence."'");
+  $stmt->execute();
+  
+  foreach($stmt->fetchAll() as $k=>$v) {
+    $ville_agence = $v['ville'];
+  }
+  
+  $json = file_get_contents('https://fr.distance24.org/route.json?stops='.$ville_agence.'|'.$_GET['ville_dest'].'');
+  $obj = json_decode($json);
+  $km = $obj->distance * 1.61;
+  
+  $prix = $km * 0.8;
+  $prix = round($prix);
+
+ $stmt=$conn->prepare("INSERT INTO mission (id_salarie, id_forfait, date_depart, date_rentrer, Id_commune, date_creation, prix) VALUES ('".$_GET['sess_id']."', '".$h['max']."', '".$newdate_depart."', '".$newdate_rentrer."', '".$ville_dest."', '".$date_now."', '".$prix."')");
  $stmt->execute();
 
 
  }else if($_SESSION['id_sal'] != "" && $_GET['sess_id'] == ""){
-    $stmt=$conn->prepare("INSERT INTO mission (id_salarie, id_forfait, date_depart, date_rentrer, Id_commune, date_creation) VALUES ('".$_SESSION['id_sal']."', '".$h['max']."', '".$newdate_depart."', '".$newdate_rentrer."', '".$ville_dest."', '".$date_now."')");
+
+  $stmt=$conn->prepare("SELECT id_agence from salarie where id_salarie = '".$_SESSION['id_sal']."'");
+  $stmt->execute();
+  foreach($stmt->fetchAll() as $k=>$v) {
+    $id_agence = $v['id_agence'];
+  }
+  
+  
+  $stmt=$conn->prepare("SELECT ville FROM agence where id_agence = '".$id_agence."'");
+  $stmt->execute();
+  
+  foreach($stmt->fetchAll() as $k=>$v) {
+    $ville_agence = $v['ville'];
+  }
+  
+  $json = file_get_contents('https://fr.distance24.org/route.json?stops='.$ville_agence.'|'.$_GET['ville_dest'].'');
+  $obj = json_decode($json);
+  $km = $obj->distance * 1.61;
+  
+  $prix = $km * 0.8;
+  $prix = round($prix);
+
+    $stmt=$conn->prepare("INSERT INTO mission (id_salarie, id_forfait, date_depart, date_rentrer, Id_commune, date_creation, prix) VALUES ('".$_SESSION['id_sal']."', '".$h['max']."', '".$newdate_depart."', '".$newdate_rentrer."', '".$ville_dest."', '".$date_now."', '".$prix."')");
     $stmt->execute();
  }
 
-
- 
 }
 
 
 
+
 }
+
 
 
 $conn = null;
