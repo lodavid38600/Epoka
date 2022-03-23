@@ -166,7 +166,7 @@ if (isset($_SESSION['valider'])) {
         <td>  " . $jf0 . " " . $date[1] . " " . $mf0 . " " . $date[3] . "</td>
         <td>  " . $jf1 . " " . $date1[1] . " " . $mf1 . " " . $date1[3] . "</td>
         <td>  " . $m['nom'] . " (" . $m['code_postal'] . ")</td>
-        <td>  " . $v['payer'] . "</td>
+        <td>  " . $v['prix'] . "€</td>
         <td><a href='validation/valider.php?id_mission=" . $v['id_mission'] . "'><button class='btn btn-success'>Valider</button></a></td>
         </tr>");
           }
