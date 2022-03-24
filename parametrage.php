@@ -125,7 +125,7 @@ if (isset($_SESSION['payer'])) {
         ?>
         <div class="col-12">
           <label for="km" class="form-label">Remboursement au Km : </label>
-          <input type="number" step="0.1" class="form-control" name="km" value=<?php
+          <input type="number" step="0.1" class="form-control" name="km" required value=<?php
                                                                                 if (isset($h['forfait_km'])) {
                                                                                   echo ($h['forfait_km']);
                                                                                 }
@@ -134,7 +134,7 @@ if (isset($_SESSION['payer'])) {
 
         <div class="col-12">
           <label for="hebergement" class="form-label">Indemnité d'hébergement : </label>
-          <input type="number" step="0.1" class="form-control" name="hebergement" value=<?php
+          <input type="number" step="0.1" class="form-control" name="hebergement" required  value=<?php
                                                                               if (isset($h['forfait_jour'])) {
                                                                                 echo ($h['forfait_jour']);
                                                                               }
@@ -163,7 +163,7 @@ if (isset($_SESSION['payer'])) {
   <div class="row">
      <div class="col-md-12">
      <label>De :</label>
-     <input type="text" name="city1" id="search_city" placeholder="Ville de départ..." class="form-control" value=<?php if(isset($_GET['city1'])){echo(base64_decode($_GET['city1']));} ?>>  
+     <input type="text" name="city1" id="search_city" placeholder="Ville de départ..." class="form-control" required value=<?php if(isset($_GET['city1'])){echo(base64_decode($_GET['city1']));} ?>>  
      </div>
   </div>
 </div>
@@ -180,7 +180,7 @@ if (isset($_SESSION['payer'])) {
   <div class="row">
      <div class="col-md-12">
      <label>A :</label>
-     <input type="text" name="city2" id="search_city2" placeholder="Ville de destination..." class="form-control" value=<?php if(isset($_GET['city2'])){echo(base64_decode($_GET['city2']));} ?> >  
+     <input type="text" name="city2" id="search_city2" placeholder="Ville de destination..." class="form-control" required value=<?php if(isset($_GET['city2'])){echo(base64_decode($_GET['city2']));} ?> >  
      </div>
   </div>
 </div>
@@ -216,11 +216,19 @@ if (isset($_SESSION['payer'])) {
         </tr>
       </thead>
       <tbody>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-        </tr>
+      <?php
+    $stmt2 = $conn->prepare("SELECT * FROM historique ORDER BY date_insert DESC LIMIT 10");
+    $stmt2->execute();
+    $result2 = $stmt2->setFetchMode(PDO::FETCH_ASSOC);
+    foreach ($stmt2->fetchAll() as $k => $j) {
+      echo("
+      <tr>
+      <td>".$j['ville_depart']."</td>
+      <td>".$j['ville_arriver']."</td>
+      <td>".$j['km']."</td>
+    </tr>");
+    }
+        ?>
       </tbody>
     </table>
   </center>
